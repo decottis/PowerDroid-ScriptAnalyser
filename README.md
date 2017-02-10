@@ -38,4 +38,6 @@ Elle sont de cette forme :
 >2,0.03255552551267791
 
 Les valeurs de la 2e colonnes sont donc calculé avec les valeurs (en Ampère) données par le power monitor. 
+```sh
 Watt = Amp * Volt (set à 3.7, valeur max)
+```
