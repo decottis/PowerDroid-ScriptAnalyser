@@ -1,0 +1,55 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+import csv 
+import sys
+import monsoon
+import os
+import time
+
+class MyMonsoon:
+
+	"""
+	argv[2] --> file monitor (ex:/dev/ttyACM0)
+	"""
+	def __init__(self):
+		os.chmod(sys.argv[2], 0666)
+
+	"""
+	write data from the monitor in a csv file (sys.argv[1])
+	"""
+	def writeCSV(self):
+		mydata = []
+		cpt = 0
+		c = csv.writer(open(sys.argv[1], "wb"))
+
+		self.mon.StartDataCollection()
+		while True:
+			data = self.mon.CollectData()
+			cptArray = 0
+			
+			while cptArray < len(data):
+				print(str(cpt) + " --> " + str(data[cptArray]))
+				c.writerow([cpt, data[cptArray]*1000])
+				cpt = cpt + 1
+				cptArray = cptArray + 1
+				time.sleep(1000)
+			
+		self.mon.StopDataCollection()
+		
+
+
+	"""
+	setup monitor
+	"""
+	def setupMonitor(self):
+		self.mon = monsoon.Monsoon()
+		self.mon.SetVoltage(3.7)
+		print(self.mon.GetStatus())
+
+
+
+if __name__ == '__main__':
+	m = MyMonsoon()
+	m.setupMonitor() 
+	m.writeCSV()
