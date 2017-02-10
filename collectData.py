@@ -32,30 +32,47 @@ class MyMonsoon:
 		hz = sys.argv[3]
 		mydata = []
 		cpt = 0
-		c = csv.writer(open(sys.argv[1], "wb"))
+		pathUser = os.path.expanduser('~')
 
-		""" add collumn title """
-		c.writerow(["tick", "W"])
+		""" create powerdroid folder if do not exist """
+		if not os.path.exists(pathUser + "/.powerdroid"):
+			os.makedirs(pathUser + "/.powerdroid")
 
-		self.mon.StartDataCollection()
-		while True:
-			data = self.mon.CollectData()
-			cptArray = 0
+		""" create the csv file """
+		file_name  =  pathUser + "/.powerdroid/" + sys.argv[1]
 
-			print((sum(data) / len(data)) * self.voltage)
-			c.writerow([cpt, (sum(data) / len(data)) * self.voltage])
+		if os.path.exists(file_name):
+			os.remove(file_name)
 
-			#while cptArray < len(data):
-			#	print(str(cpt) + " --> " + str(data[cptArray]))
-			#	c.writerow([cpt, data[cptArray]])
-			#	cpt = cpt + 1
-			#	cptArray = cptArray + 1
-			#	time.sleep(float(hz))
 
-			time.sleep(float(hz))
-			cpt = cpt + 1
+		with open(file_name, "aw") as my_file:
+    		# mode a will either create the file if it does not exist
+    		# or append the content to its end if it exists.
+			my_file.truncate()
+			c = csv.writer(my_file)
 
-		self.mon.StopDataCollection()
+			""" add collumn title """
+			c.writerow(["tick (hz)", "Watt (W)"])
+
+			self.mon.StartDataCollection()
+			while True:
+				data = self.mon.CollectData()
+				cptArray = 0
+
+				print((sum(data) / len(data)) * self.voltage)
+				c.writerow([cpt, (sum(data) / len(data)) * self.voltage])
+
+				#while cptArray < len(data):
+				#	print(str(cpt) + " --> " + str(data[cptArray]))
+				#	c.writerow([cpt, data[cptArray]])
+				#	cpt = cpt + 1
+				#	cptArray = cptArray + 1
+				#	time.sleep(float(hz))
+
+				time.sleep(float(hz))
+				cpt = cpt + 1
+
+			self.mon.StopDataCollection()
 
 
 
