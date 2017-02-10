@@ -32,10 +32,10 @@ $ sudo python collectData.py data.csv /dev/ttyACM0 1
 Les données sont donc stockées dans ~/.powerdroid/data.csv
 Elle sont de cette forme :
 
-> tick (hz),Watt (W)
-> 0,0.03201667060266392
-> 1,0.023462962037591625
-> 2,0.03255552551267791
+>tick (hz),Watt (W)
+>0,0.03201667060266392
+>1,0.023462962037591625
+>2,0.03255552551267791
 
 Les valeurs de la 2e colonnes sont donc calculé avec les valeurs (en Ampère) données par le power monitor. 
 Watt = Amp * Volt (set à 3.7, valeur max)
